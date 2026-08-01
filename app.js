@@ -1,107 +1,30 @@
 (() => {
   'use strict';
-
-  const CYLINDERS = {
-    d: { factor: 0.16, name: 'D Tank' },
-    e: { factor: 0.28, name: 'E Tank' },
-    m: { factor: 1.56, name: 'M Tank' }
-  };
-
-  const SAFE_RESIDUAL = 300;
-  const AIR_FIO2 = 20.9;
-  const O2_FIO2_DIFF = 79.1;
-  const WARNING_MINUTES = 30;
-  const CRITICAL_MINUTES = 15;
-
-  let selectedTank = 'd';
-
-  const psi = document.getElementById('psi');
-  const fio2 = document.getElementById('fio2');
-  const flow = document.getElementById('flow');
-  const resultCard = document.getElementById('resultCard');
-  const statusBadge = document.getElementById('statusBadge');
-  const duration = document.getElementById('duration');
-  const rawDuration = document.getElementById('rawDuration');
-
-  function formatDuration(minutes) {
-    if (!Number.isFinite(minutes)) return 'Continuous';
-    const rounded = Math.max(0, Math.round(minutes));
-    if (rounded < 61) return `${rounded} min`;
-    const hours = Math.floor(rounded / 60);
-    const remainder = rounded % 60;
-    return remainder === 0 ? `${hours} hr` : `${hours} hr ${remainder} min`;
+  const CYLINDERS={d:{factor:.16},e:{factor:.28},m:{factor:1.56}};
+  const SAFE_RESIDUAL=300,AIR_FIO2=20.9,O2_FIO2_DIFF=79.1,WARNING_MINUTES=30,CRITICAL_MINUTES=15;
+  let selectedTank='d';
+  const psi=document.getElementById('psi'),fio2=document.getElementById('fio2'),flow=document.getElementById('flow');
+  const resultPanel=document.getElementById('resultPanel'),statusBadge=document.getElementById('statusBadge'),duration=document.getElementById('duration'),rawDuration=document.getElementById('rawDuration'),oxygenFlow=document.getElementById('oxygenFlow'),usableOxygen=document.getElementById('usableOxygen');
+  function formatDuration(minutes){const rounded=Math.max(0,Math.round(minutes));if(rounded<61)return `${rounded} min`;const h=Math.floor(rounded/60),m=rounded%60;return m?`${h} hr ${m} min`:`${h} hr`;}
+  function setState(type,status,main,raw='',o2='—',usable='—'){resultPanel.className=`panel result-panel ${type}`;statusBadge.textContent=status;duration.textContent=main;rawDuration.textContent=raw;rawDuration.hidden=!raw;oxygenFlow.textContent=o2;usableOxygen.textContent=usable;}
+  function calculate(){
+    const p=Number(psi.value),f=Number(fio2.value),q=Number(flow.value);
+    const pOk=psi.value===''||p>=SAFE_RESIDUAL,fOk=fio2.value===''||(f>=21&&f<=100),qOk=flow.value===''||q>0;
+    document.getElementById('psiError').hidden=pOk;document.getElementById('fio2Error').hidden=fOk;document.getElementById('flowError').hidden=qOk;
+    if(!pOk||!fOk||!qOk||psi.value===''||fio2.value===''||flow.value===''){setState('neutral','Awaiting Settings','Enter pressure, FiO₂, and flow');return;}
+    const fraction=(f-AIR_FIO2)/O2_FIO2_DIFF;
+    const tankFlow=fraction*q;
+    const usable=Math.max(p-SAFE_RESIDUAL,0)*CYLINDERS[selectedTank].factor;
+    if(fraction<=0){setState('normal','Oxygen Supply Available','Continuous','No supplemental oxygen required at entered FiO₂','0.0 L/min',`${usable.toFixed(0)} L`);return;}
+    const mins=usable/tankFlow;
+    if(!Number.isFinite(mins)||mins<0){setState('neutral','Check Settings','Check entered values');return;}
+    const type=mins<=CRITICAL_MINUTES?'critical':mins<=WARNING_MINUTES?'warning':'normal';
+    const status=type==='critical'?'Critical Low Supply':type==='warning'?'Low Supply Warning':'Oxygen Supply Available';
+    setState(type,status,formatDuration(mins),`Calculated duration: ${mins.toFixed(1)} minutes`,`${tankFlow.toFixed(1)} L/min`,`${usable.toFixed(0)} L`);
   }
-
-  function setState(type, status, main, raw = '') {
-    resultCard.className = `result-card ${type}`;
-    statusBadge.textContent = status;
-    duration.textContent = main;
-    rawDuration.textContent = raw;
-    rawDuration.hidden = !raw;
-  }
-
-  function validate() {
-    const pressure = Number(psi.value);
-    const oxygen = Number(fio2.value);
-    const totalFlow = Number(flow.value);
-
-    const psiValid = psi.value === '' || pressure >= SAFE_RESIDUAL;
-    const fio2Valid = fio2.value === '' || (oxygen >= 21 && oxygen <= 100);
-    const flowValid = flow.value === '' || totalFlow > 0;
-
-    document.getElementById('psiError').hidden = psiValid;
-    document.getElementById('fio2Error').hidden = fio2Valid;
-    document.getElementById('flowError').hidden = flowValid;
-
-    return { pressure, oxygen, totalFlow, valid: psiValid && fio2Valid && flowValid };
-  }
-
-  function calculate() {
-    const values = validate();
-    if (!values.valid || psi.value === '' || fio2.value === '' || flow.value === '') {
-      setState('neutral', 'Estimated Duration', 'Enter pressure, FiO₂, and flow');
-      return;
-    }
-
-    const fraction = (values.oxygen - AIR_FIO2) / O2_FIO2_DIFF;
-    if (fraction <= 0) {
-      setState('normal', 'Oxygen Supply Available', 'Continuous');
-      return;
-    }
-
-    const tankFlow = fraction * values.totalFlow;
-    const usableLiters = Math.max(values.pressure - SAFE_RESIDUAL, 0) * CYLINDERS[selectedTank].factor;
-    const minutes = usableLiters / tankFlow;
-
-    if (!Number.isFinite(minutes) || minutes < 0) {
-      setState('neutral', 'Estimated Duration', 'Check entered values');
-      return;
-    }
-
-    if (minutes <= CRITICAL_MINUTES) {
-      setState('critical', 'Critical Low Supply', formatDuration(minutes), `Calculated duration: ${minutes.toFixed(1)} minutes`);
-    } else if (minutes <= WARNING_MINUTES) {
-      setState('warning', 'Low Supply Warning', formatDuration(minutes), `Calculated duration: ${minutes.toFixed(1)} minutes`);
-    } else {
-      setState('normal', 'Oxygen Supply Available', formatDuration(minutes), `Calculated duration: ${minutes.toFixed(1)} minutes`);
-    }
-  }
-
-  document.querySelectorAll('.source-option').forEach(button => {
-    button.addEventListener('click', () => {
-      selectedTank = button.dataset.tank;
-      document.querySelectorAll('.source-option').forEach(item => {
-        const selected = item === button;
-        item.classList.toggle('selected', selected);
-        item.setAttribute('aria-checked', String(selected));
-      });
-      calculate();
-    });
-  });
-
-  [psi, fio2, flow].forEach(input => input.addEventListener('input', calculate));
-
-  if ('serviceWorker' in navigator) {
-    window.addEventListener('load', () => navigator.serviceWorker.register('./sw.js').catch(() => {}));
-  }
+  document.querySelectorAll('.source-option').forEach(btn=>btn.addEventListener('click',()=>{selectedTank=btn.dataset.tank;document.querySelectorAll('.source-option').forEach(item=>{const on=item===btn;item.classList.toggle('selected',on);item.setAttribute('aria-checked',String(on));});calculate();}));
+  [psi,fio2,flow].forEach(input=>input.addEventListener('input',calculate));
+  document.getElementById('resetButton').addEventListener('click',()=>{psi.value='';fio2.value='';flow.value='';selectedTank='d';document.querySelectorAll('.source-option').forEach((item,i)=>{item.classList.toggle('selected',i===0);item.setAttribute('aria-checked',String(i===0));});document.querySelectorAll('.error').forEach(e=>e.hidden=true);setState('neutral','Awaiting Settings','Enter pressure, FiO₂, and flow');psi.focus();});
+  document.getElementById('themeToggle').addEventListener('click',()=>document.body.classList.toggle('dark'));
+  if('serviceWorker'in navigator)window.addEventListener('load',()=>navigator.serviceWorker.register('./sw.js').catch(()=>{}));
 })();
