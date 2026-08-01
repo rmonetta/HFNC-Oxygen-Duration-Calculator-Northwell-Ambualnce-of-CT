@@ -4,3 +4,5 @@ oxygen consumption = total flow x oxygen fraction
 usable oxygen = (PSI - 300) x cylinder factor
 duration = usable oxygen / oxygen consumption
 Cylinder factors: D 0.16, E 0.28, M 1.56.
+
+Version 2.2: Duration status thresholds and colors aligned with ventilator calculator: green >=60 min, yellow 30-59 min, red <30 min.
