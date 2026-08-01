@@ -1,0 +1,13 @@
+HFNC CALCULATOR VERSION 2 VALIDATION
+
+Project type: Static HTML/CSS/JavaScript
+Build step required: No
+Supported tanks: D, E, M only
+Safe residual: 300 PSI
+FiO2 range: 21–100%
+Flow must be greater than 0 L/min
+Duration display:
+- 60 minutes or less: minutes only
+- 61 minutes or more: hours and minutes
+Warning threshold: 30 minutes
+Critical threshold: 15 minutes
