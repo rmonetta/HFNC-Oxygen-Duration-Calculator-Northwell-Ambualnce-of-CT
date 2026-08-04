@@ -3,31 +3,39 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-  <meta name="theme-color" content="#183873">
+  <meta name="theme-color" content="#062f63">
   <meta name="description" content="HFNC oxygen duration calculator for heated high flow nasal cannula therapy.">
   <title>HFNC Oxygen Duration Calculator</title>
   <link rel="manifest" href="manifest.webmanifest">
   <link rel="icon" href="assets/icons/favicon.ico">
   <link rel="apple-touch-icon" href="assets/icons/apple-touch-icon.png">
-  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="styles.css?v=3.0">
 </head>
 <body>
-  <header class="site-header">
-    <div class="header-inner">
-      <div class="brand-row">
-        <div class="brand" aria-label="Northwell Ambulance of Connecticut">
-          <div class="northwell-mark" aria-hidden="true">
-            <i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i>
-          </div>
-          <div class="brand-text"><strong>Northwell</strong><span>Ambulance of Connecticut</span></div>
-        </div>
-        <button id="themeToggle" class="theme-toggle" type="button" aria-label="Toggle dark mode">◐</button>
+  <header class="app-header">
+    <div class="brand-wrap">
+      <div class="brand-mark" aria-hidden="true">
+        <span></span><span></span><span></span><span></span>
+        <span></span><span></span><span></span><span></span>
+        <span></span><span></span><span></span><span></span>
       </div>
-      <div class="header-rule"></div>
-      <div class="title-block">
+      <div class="brand-text">
+        <div class="brand-main">Northwell</div>
+        <div class="brand-sub">Ambulance of Connecticut</div>
+      </div>
+      <button id="themeToggle" class="icon-button" type="button" aria-label="Switch to dark mode" title="Toggle dark mode"><span class="theme-icon" aria-hidden="true">◐</span></button>
+    </div>
+    <div class="title-rule"></div>
+    <div class="title-with-icon">
+      <svg class="therapy-icon" viewBox="0 0 96 96" role="img" aria-label="High flow nasal cannula icon">
+        <path d="M19 49c8-8 17-12 29-12s21 4 29 12" fill="none" stroke="currentColor" stroke-width="6" stroke-linecap="round"/>
+        <path d="M38 39v13c0 5 4 9 10 9s10-4 10-9V39" fill="none" stroke="currentColor" stroke-width="6" stroke-linecap="round"/>
+        <path d="M19 49 7 57M77 49l12 8M31 69c5 5 11 8 17 8s12-3 17-8" fill="none" stroke="currentColor" stroke-width="5" stroke-linecap="round"/>
+      </svg>
+      <div>
         <h1>HFNC Oxygen Duration Calculator</h1>
-        <h2>For Heated High Flow Nasal Cannula Therapy</h2>
-        <p>Pre-Arrival Transport Planning Tool</p>
+        <p class="patient-type">For Heated High Flow Nasal Cannula Therapy</p>
+        <p class="subtitle">Pre-Arrival Transport Planning Tool</p>
       </div>
     </div>
   </header>
@@ -39,24 +47,14 @@
         <div class="source-control">
           <label>Select Oxygen Source</label>
           <div class="source-grid" role="radiogroup" aria-label="Select oxygen source">
-            <button class="source-option selected" type="button" role="radio" aria-checked="true" data-tank="d">
-              <strong>D Tank</strong><small>Portable Cylinder</small>
-            </button>
-            <button class="source-option" type="button" role="radio" aria-checked="false" data-tank="e">
-              <strong>E Tank</strong><small>Large Portable Cylinder</small>
-            </button>
-            <button class="source-option" type="button" role="radio" aria-checked="false" data-tank="m">
-              <strong>M Tank</strong><small>Ambulance On-Board Main</small>
-            </button>
+            <button class="source-option selected" type="button" role="radio" aria-checked="true" data-tank="d"><strong>D Tank</strong><small>Portable Cylinder</small></button>
+            <button class="source-option" type="button" role="radio" aria-checked="false" data-tank="e"><strong>E Tank</strong><small>Large Portable Cylinder</small></button>
+            <button class="source-option" type="button" role="radio" aria-checked="false" data-tank="m"><strong>M Tank</strong><small>Ambulance On-Board Main</small></button>
           </div>
         </div>
-
         <div class="field-group pressure-field">
           <label for="psi">Current Tank Pressure</label>
-          <div class="input-unit">
-            <input id="psi" type="number" inputmode="decimal" min="0" max="3000" step="1" placeholder="Enter PSI" autocomplete="off">
-            <span>PSI</span>
-          </div>
+          <div class="input-unit"><input id="psi" type="number" inputmode="decimal" min="0" max="3000" step="1" placeholder="Enter PSI" autocomplete="off"><span>PSI</span></div>
           <p class="range">Allowed range: 0–3000 PSI</p>
           <p id="psiError" class="error" hidden>Pressure must be at least 300 PSI.</p>
         </div>
@@ -66,46 +64,56 @@
     <section class="panel">
       <h3 class="section-title"><span>2</span> HFNC Settings</h3>
       <div class="settings-grid">
-        <div class="field-group">
-          <label for="fio2">FiO₂</label>
-          <div class="input-unit">
-            <input id="fio2" type="number" inputmode="decimal" min="21" max="100" step="1" placeholder="FiO₂" autocomplete="off">
-            <span>%</span>
-          </div>
-          <p class="range">Enter a FiO₂ between 21% and 100%.</p>
-          <p id="fio2Error" class="error" hidden>Enter a FiO₂ between 21% and 100%.</p>
-        </div>
+        <div class="field-group"><label for="fio2">FiO₂</label><div class="input-unit"><input id="fio2" type="number" inputmode="decimal" min="21" max="100" step="1" placeholder="FiO₂" autocomplete="off"><span>%</span></div><p class="range">Enter a FiO₂ between 21% and 100%.</p><p id="fio2Error" class="error" hidden>Enter a FiO₂ between 21% and 100%.</p></div>
+        <div class="field-group"><label for="flow">Total Flow</label><div class="input-unit"><input id="flow" type="number" inputmode="decimal" min="0.5" max="60" step="0.5" placeholder="Flow" autocomplete="off"><span>L/min</span></div><p class="range">Enter a flow between 0.5 and 60 L/min.</p><p id="flowError" class="error" hidden>Enter a flow between 0.5 and 60 L/min.</p></div>
+      </div>
+    </section>
 
-        <div class="field-group">
-          <label for="flow">Total Flow</label>
-          <div class="input-unit">
-            <input id="flow" type="number" inputmode="decimal" min="0.5" max="60" step="0.5" placeholder="Flow" autocomplete="off">
-            <span>L/min</span>
-          </div>
-          <p class="range">Enter a flow between 0.5 and 60 L/min.</p>
-          <p id="flowError" class="error" hidden>Enter a flow between 0.5 and 60 L/min.</p>
-        </div>
+    <section class="panel transport-panel" aria-labelledby="transport-heading">
+      <h3 id="transport-heading" class="section-title"><span>3</span> Transport Planning <em class="optional-label">Optional</em></h3>
+      <div class="field-group transport-time-field">
+        <label for="transportMinutes">Estimated Transport Time</label>
+        <div class="input-unit"><input id="transportMinutes" type="number" inputmode="numeric" min="1" max="1440" step="1" placeholder="Enter minutes" autocomplete="off"><span>minutes</span></div>
+        <p class="range">Include anticipated loading, travel, transfer of care, and foreseeable delays.</p>
+        <p id="transportMinutesError" class="error" hidden>Enter a transport time from 1–1440 minutes.</p>
       </div>
       <button id="resetButton" class="reset-button" type="button">Reset Calculator</button>
     </section>
 
     <section id="resultPanel" class="panel result-panel neutral" aria-live="polite">
-      <h3 class="section-title"><span>3</span> Estimated Oxygen Duration</h3>
+      <h3 class="section-title"><span>4</span> Estimated Oxygen Duration</h3>
       <div class="result-content">
         <div id="statusBadge" class="status-badge">Awaiting Settings</div>
         <div id="duration" class="duration">Enter pressure, FiO₂, and flow</div>
         <p id="rawDuration" class="raw-duration" hidden></p>
-        <div class="result-details">
-          <div><span>O₂ Consumption</span><strong id="oxygenFlow">—</strong></div>
-          <div><span>Usable Oxygen</span><strong id="usableOxygen">—</strong></div>
-        </div>
+        <div class="result-details"><div><span>O₂ Consumption</span><strong id="oxygenFlow">—</strong></div><div><span>Usable Oxygen</span><strong id="usableOxygen">—</strong></div></div>
       </div>
       <div id="statusMessage" class="status-message" hidden></div>
       <div class="info-note">Uses a <strong>300 PSI safe residual</strong>. FiO₂ is included in the oxygen-consumption calculation.</div>
+
+      <div id="transportAssessment" class="transport-assessment" hidden>
+        <div id="transportBanner" class="recommendation transport-decision neutral" role="status">
+          <span id="assessmentIcon" class="recommendation-icon" aria-hidden="true">•</span>
+          <div class="recommendation-content">
+            <div class="assessment-kicker">Transport Assessment</div>
+            <div id="transportTitle" class="recommendation-title"></div>
+            <div id="transportText" class="recommendation-text"></div>
+          </div>
+        </div>
+      </div>
     </section>
 
-    <footer class="page-footer">Estimate only. Verify oxygen supply frequently and follow local clinical and transport policies. <strong>Version 2.2</strong></footer>
+    <section class="range-guide" aria-label="Transport assessment guide">
+      <h2>Transport Assessment Guide</h2>
+      <div class="range-grid">
+        <div class="range-item good"><span class="range-symbol" aria-hidden="true">✓</span><div><strong>15+ min reserve</strong><span>Adequate supply</span></div></div>
+        <div class="range-item caution"><span class="range-symbol" aria-hidden="true">!</span><div><strong>0–14 min reserve</strong><span>Limited reserve</span></div></div>
+        <div class="range-item critical"><span class="range-symbol" aria-hidden="true">×</span><div><strong>Transport exceeds supply</strong><span>Insufficient supply</span></div></div>
+      </div>
+    </section>
+
+    <footer class="page-footer">Estimate only. Verify oxygen supply frequently and follow local clinical and transport policies. <strong>Version 3.0</strong></footer>
   </main>
-  <script src="app.js"></script>
+  <script src="app.js?v=3.0"></script>
 </body>
 </html>
