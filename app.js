@@ -28,7 +28,7 @@
   }
   function calculate(){
     const p=Number(psi.value),f=Number(fio2.value),q=Number(flow.value);
-    const pOk=psi.value===''||p>=SAFE_RESIDUAL,fOk=fio2.value===''||(f>=21&&f<=100),qOk=flow.value===''||q>0;
+    const pOk=psi.value===''||(p>=300&&p<=2500),fOk=fio2.value===''||(f>=21&&f<=100),qOk=flow.value===''||q>0;
     document.getElementById('psiError').hidden=pOk;document.getElementById('fio2Error').hidden=fOk;document.getElementById('flowError').hidden=qOk;
     if(!pOk||!fOk||!qOk||psi.value===''||fio2.value===''||flow.value===''){lastDuration=null;setState('neutral','Awaiting Settings','Enter pressure, FiO₂, and flow');setTransportAssessment(null);return;}
     const fraction=(f-AIR_FIO2)/O2_FIO2_DIFF;
