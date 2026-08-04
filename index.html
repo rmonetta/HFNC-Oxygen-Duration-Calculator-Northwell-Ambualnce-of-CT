@@ -9,7 +9,7 @@
   <link rel="manifest" href="manifest.webmanifest">
   <link rel="icon" href="assets/icons/favicon.ico">
   <link rel="apple-touch-icon" href="assets/icons/apple-touch-icon.png">
-  <link rel="stylesheet" href="styles.css?v=3.0">
+  <link rel="stylesheet" href="styles.css?v=3.2">
 </head>
 <body>
   <header class="app-header">
@@ -23,16 +23,21 @@
         <div class="brand-main">Northwell</div>
         <div class="brand-sub">Ambulance of Connecticut</div>
       </div>
-      <button id="themeToggle" class="icon-button" type="button" aria-label="Switch to dark mode" title="Toggle dark mode"><span class="theme-icon" aria-hidden="true">◐</span></button>
+      <div class="header-actions">
+        <a class="home-button" href="https://pre-arrival-transport-planning-tools.openemsresources.workers.dev" aria-label="Return to Calculator Selection" title="Return to Calculator Selection">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3.5 10.8 12 3.7l8.5 7.1"/><path d="M5.8 9.4v10h4.3v-5.7h3.8v5.7h4.3v-10"/></svg>
+        </a>
+        <button id="themeToggle" class="icon-button" type="button" aria-label="Switch to dark mode" title="Toggle dark mode"><span class="theme-icon" aria-hidden="true">◐</span></button>
+      </div>
     </div>
     <div class="title-rule"></div>
     <div class="title-with-icon">
-      <svg class="therapy-icon" viewBox="0 0 96 96" role="img" aria-label="High flow nasal cannula icon">
-        <path d="M19 49c8-8 17-12 29-12s21 4 29 12" fill="none" stroke="currentColor" stroke-width="6" stroke-linecap="round"/>
-        <path d="M38 39v13c0 5 4 9 10 9s10-4 10-9V39" fill="none" stroke="currentColor" stroke-width="6" stroke-linecap="round"/>
-        <path d="M19 49 7 57M77 49l12 8M31 69c5 5 11 8 17 8s12-3 17-8" fill="none" stroke="currentColor" stroke-width="5" stroke-linecap="round"/>
-      </svg>
-      <div>
+      <div class="title-images" aria-hidden="true">
+        <img class="adult-cannula-image" src="assets/images/adult-hfnc-cannula.png?v=3.2" alt="">
+        <img class="pediatric-cannula-image" src="assets/images/pediatric-hfnc-cannula.png?v=3.2" alt="">
+        <img class="h900-image" src="assets/images/h900-humidifier.png?v=3.2" alt="">
+      </div>
+      <div class="title-copy">
         <h1>HFNC Oxygen Duration Calculator</h1>
         <p class="patient-type">For Heated High Flow Nasal Cannula Therapy</p>
         <p class="subtitle">Pre-Arrival Transport Planning Tool</p>
@@ -41,6 +46,37 @@
   </header>
 
   <main class="page-shell">
+    <section class="clinical-resources" aria-labelledby="clinical-resources-heading">
+      <div class="resource-heading">
+        <div>
+          <p class="resource-kicker">Quick access</p>
+          <h2 id="clinical-resources-heading">Clinical Setup Resources</h2>
+        </div>
+        <p class="resource-intro">Open the illustrated adult and pediatric setup guide or watch the setup demonstration.</p>
+      </div>
+      <div class="resource-grid single-resource">
+        <article class="resource-card">
+          <div class="resource-card-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24"><path d="M6 3.5h8l4 4V20.5H6z"/><path d="M14 3.5v4h4"/><path d="M9 12h6M9 15.5h6"/></svg>
+          </div>
+          <div class="resource-card-content">
+            <h3>Heated Humidified High Flow NC Setup</h3>
+            <p>Adult and pediatric setup, H900 configuration, cannula sizing, fitting, and flow guidance.</p>
+            <div class="resource-actions">
+              <a class="resource-button guide-link" href="assets/guides/heated-humidified-high-flow-nc-setup.pdf" target="_blank" rel="noopener noreferrer">
+                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 3.5h8l4 4V20.5H6z"/><path d="M14 3.5v4h4"/></svg>
+                View PDF Guide
+              </a>
+              <a class="resource-button video-link" href="https://youtu.be/BNDJ0-05x-c" target="_blank" rel="noopener noreferrer">
+                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9.5 7.5 17 12l-7.5 4.5z"/><circle cx="12" cy="12" r="9"/></svg>
+                Watch Setup Video
+              </a>
+            </div>
+          </div>
+        </article>
+      </div>
+    </section>
+
     <section class="panel">
       <h3 class="section-title"><span>1</span> Oxygen Source</h3>
       <div class="source-layout">
@@ -121,8 +157,8 @@
       </div>
     </section>
 
-    <footer class="page-footer">Estimate only. Verify oxygen supply frequently and follow local clinical and transport policies. <strong>Version 3.1</strong></footer>
+    <footer class="page-footer">Estimate only. Verify oxygen supply frequently and follow local clinical and transport policies. <strong>Version 3.2</strong></footer>
   </main>
-  <script src="app.js?v=3.0"></script>
+  <script src="app.js?v=3.2"></script>
 </body>
 </html>
