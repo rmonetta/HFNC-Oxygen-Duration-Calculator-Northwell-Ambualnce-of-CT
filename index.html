@@ -72,10 +72,19 @@
     <section class="panel transport-panel" aria-labelledby="transport-heading">
       <h3 id="transport-heading" class="section-title"><span>3</span> Transport Planning <em class="optional-label">Optional</em></h3>
       <div class="field-group transport-time-field">
-        <label for="transportMinutes">Estimated Transport Time</label>
-        <div class="input-unit"><input id="transportMinutes" type="number" inputmode="numeric" min="1" max="1440" step="1" placeholder="Enter minutes" autocomplete="off"><span>minutes</span></div>
+        <label>Estimated Transport Time</label>
+        <div class="transport-time-grid">
+          <div>
+            <label class="sub-label" for="transportHours">Hours</label>
+            <div class="input-unit"><input id="transportHours" type="number" inputmode="numeric" min="0" max="24" step="1" placeholder="0" autocomplete="off"><span>hours</span></div>
+          </div>
+          <div>
+            <label class="sub-label" for="transportMinutes">Minutes</label>
+            <div class="input-unit"><input id="transportMinutes" type="number" inputmode="numeric" min="0" max="59" step="1" placeholder="Enter minutes" autocomplete="off"><span>minutes</span></div>
+          </div>
+        </div>
         <p class="range">Include anticipated loading, travel, transfer of care, and foreseeable delays.</p>
-        <p id="transportMinutesError" class="error" hidden>Enter a transport time from 1–1440 minutes.</p>
+        <p id="transportTimeError" class="error" hidden>Enter 0–24 hours and 0–59 minutes.</p>
       </div>
       <button id="resetButton" class="reset-button" type="button">Reset Calculator</button>
     </section>
@@ -112,7 +121,7 @@
       </div>
     </section>
 
-    <footer class="page-footer">Estimate only. Verify oxygen supply frequently and follow local clinical and transport policies. <strong>Version 3.0</strong></footer>
+    <footer class="page-footer">Estimate only. Verify oxygen supply frequently and follow local clinical and transport policies. <strong>Version 3.1</strong></footer>
   </main>
   <script src="app.js?v=3.0"></script>
 </body>
